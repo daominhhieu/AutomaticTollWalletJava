@@ -5,19 +5,28 @@ package com.example.automatictollwalletjava.data.model;
  */
 public class LoggedInUser {
 
-    private String userId;
+    private String username;
     private String displayName;
+    private int budget;
 
-    public LoggedInUser(String userId, String displayName) {
-        this.userId = userId;
+    public LoggedInUser(String username, String displayName, int budget) {
+        this.username = username;
         this.displayName = displayName;
+        this.budget = budget;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserId()
+    {
+        return this.username;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getDisplayName()
+    {
+        return this.displayName;
+    }
+
+    public int getBudget()
+    {
+        return this.budget;
     }
 }
