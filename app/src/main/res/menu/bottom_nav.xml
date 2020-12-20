@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="home"
+          android:id="@id/homeFragment"
+          android:icon="@drawable/ic_home_nav"/>
+    <item android:title="history"
+          android:id="@id/historyTransactionFragment"
+          android:icon="@drawable/ic_history_nav"/>
+    <item android:title="vehicle"
+          android:id="@id/vehicleFragment"
+          android:icon="@drawable/ic_vehicle_nav"/>
+</menu>

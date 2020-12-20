@@ -1,61 +1,50 @@
 package com.example.automatictollwalletjava;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class MainActivity extends AppCompatActivity {
+
+    public static final int PERMISSION_FINE_LOCATION = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Fragment home_fragment = new HomeFragement();
-        final Fragment history_transaction_fragment = new HisotryTransactionFragment();
-        final Fragment vehicle_info_fragment = new VehicleFragment();
 
-        Button home_tab = findViewById(R.id.home_tab);
-        Button history_tab = findViewById(R.id.history_tab);
-        Button vehicle_tab = findViewById(R.id.vehicle_tab);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        NavController navController = Navigation.findNavController(this, R.id.general_nav_fragment);
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.FrameLayoutMain,home_fragment)
-                .commit();
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        home_tab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.FrameLayoutMain,home_fragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
 
-        history_tab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.FrameLayoutMain,history_transaction_fragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+    }
 
-        vehicle_tab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.FrameLayoutMain,vehicle_info_fragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch(requestCode)
+        {
+            case PERMISSION_FINE_LOCATION:
+                if(grantResults[0] == PackageManager.PERMISSION_DENIED)
+                {
+                    finish();
+                }
+        }
     }
 }

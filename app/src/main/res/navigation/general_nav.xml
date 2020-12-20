@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/budget_nav"
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/vehicleFragment"
+        android:name="com.example.automatictollwalletjava.VehicleFragment"
+        android:label="fragment_vehicle"
+        tools:layout="@layout/fragment_vehicle" />
+    <fragment
+        android:id="@+id/historyTransactionFragment"
+        android:name="com.example.automatictollwalletjava.HistoryTransactionFragment"
+        android:label="fragment_history_transaction"
+        tools:layout="@layout/fragment_history_transaction" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.automatictollwalletjava.homeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_add_money"
+            app:destination="@id/addMoneyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_retreiveMoneyFragment"
+            app:destination="@id/retreiveMoneyFragment" />
+        <action
+            android:id="@+id/action_driver_register"
+            app:destination="@id/driverRegisterFragment" />
+        <action
+            android:id="@+id/action_retreive_money"
+            app:destination="@id/retreiveMoneyFragment" />
+        <action
+            android:id="@+id/action_vehicle_register"
+            app:destination="@id/vehicleRegisterFragment" />
+        <action
+            android:id="@+id/action_logout"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addMoneyFragment"
+        android:name="com.example.automatictollwalletjava.add_retrive_fragment.AddMoneyFragment"
+        android:label="fragment_add_money"
+        tools:layout="@layout/fragment_add_money" />
+    <fragment
+        android:id="@+id/retreiveMoneyFragment"
+        android:name="com.example.automatictollwalletjava.add_retrive_fragment.RetreiveMoneyFragment"
+        android:label="fragment_retreive_money"
+        tools:layout="@layout/fragment_retreive_money" />
+    <fragment
+        android:id="@+id/driverRegisterFragment"
+        android:name="com.example.automatictollwalletjava.vehicle_interaction.DriverRegisterFragment"
+        android:label="fragment_driver_register"
+        tools:layout="@layout/fragment_driver_register" />
+    <fragment
+        android:id="@+id/vehicleRegisterFragment"
+        android:name="com.example.automatictollwalletjava.vehicle_interaction.VehicleRegisterFragment"
+        android:label="fragment_vehicle_register"
+        tools:layout="@layout/fragment_vehicle_register" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.automatictollwalletjava.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_valid_log_in"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_sign_up"
+            app:destination="@id/signupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.example.automatictollwalletjava.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup" >
+        <action
+            android:id="@+id/action_complete_sign_up"
+            app:destination="@id/loginFragment" />
+    </fragment>
+</navigation>

@@ -1,4 +1,4 @@
-package com.example.automatictollwalletjava;
+package com.example.automatictollwalletjava.add_retrive_fragment;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.automatictollwalletjava.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddMoneyFragment#newInstance} factory method to
+ * Use the {@link RetreiveMoneyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddMoneyFragment extends Fragment {
+public class RetreiveMoneyFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class AddMoneyFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AddMoneyFragment() {
+    public RetreiveMoneyFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class AddMoneyFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment VehicleConnectionFragment.
+     * @return A new instance of fragment AddRetreiveMoneyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddMoneyFragment newInstance(String param1, String param2) {
-        AddMoneyFragment fragment = new AddMoneyFragment();
+    public static RetreiveMoneyFragment newInstance(String param1, String param2) {
+        RetreiveMoneyFragment fragment = new RetreiveMoneyFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class AddMoneyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_money, container, false);
+        return inflater.inflate(R.layout.fragment_retreive_money, container, false);
     }
 }

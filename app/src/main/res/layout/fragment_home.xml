@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragement">
+    tools:context=".homeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +16,8 @@
             style="@style/Widget.AppCompat.Button"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:background="@color/btn_theme"
+            android:fontFamily="sans-serif-medium"
             android:text="RetreiveMoney"
             app:layout_constraintBottom_toTopOf="@+id/register_vehicle_btn"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,18 +30,23 @@
             style="@style/Widget.AppCompat.Button"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:background="@color/btn_theme"
+            android:fontFamily="sans-serif-medium"
+            android:hapticFeedbackEnabled="true"
             android:text="Add Money"
-            app:layout_constraintBottom_toTopOf="@+id/register_btn"
+            app:layout_constraintBottom_toTopOf="@+id/register_driver_btn"
             app:layout_constraintEnd_toStartOf="@+id/retreive_money_btn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_img" />
 
         <Button
-            android:id="@+id/register_btn"
+            android:id="@+id/register_driver_btn"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:background="@color/btn_theme"
+            android:fontFamily="sans-serif-medium"
             android:text="Register driver"
             app:layout_constraintBottom_toTopOf="@+id/debug_btn"
             app:layout_constraintEnd_toStartOf="@+id/register_vehicle_btn"
@@ -52,23 +59,27 @@
             style="@style/Widget.AppCompat.Button"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:background="@color/btn_theme"
+            android:fontFamily="sans-serif-medium"
             android:text="Debug"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/log_out_btn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/register_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/register_driver_btn" />
 
         <Button
             android:id="@+id/register_vehicle_btn"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:background="@color/btn_theme"
+            android:fontFamily="sans-serif-medium"
             android:text="Register Vehicle"
             app:layout_constraintBottom_toTopOf="@+id/log_out_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/register_btn"
+            app:layout_constraintStart_toEndOf="@+id/register_driver_btn"
             app:layout_constraintTop_toBottomOf="@+id/retreive_money_btn" />
 
         <Button
@@ -76,6 +87,8 @@
             style="@style/Widget.AppCompat.Button"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:background="@color/btn_theme"
+            android:fontFamily="sans-serif-medium"
             android:text="Log out"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +100,7 @@
             android:id="@+id/user_info_tv"
             android:layout_width="225dp"
             android:layout_height="106dp"
-            android:text="TextView"
+            android:text="Information"
             app:layout_constraintBottom_toTopOf="@+id/retreive_money_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

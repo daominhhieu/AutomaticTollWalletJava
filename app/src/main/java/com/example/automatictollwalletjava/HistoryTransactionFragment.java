@@ -21,10 +21,10 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HisotryTransactionFragment#newInstance} factory method to
+ * Use the {@link HistoryTransactionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HisotryTransactionFragment extends Fragment {
+public class HistoryTransactionFragment extends Fragment {
     public static int MESSAGE_KEY = 0;
     ListView listView;
     String[] mTitle = {"12/7/2020", "14/7/2020", "28/7/2020", "10/8/2020", "12/8/2020"};
@@ -43,7 +43,7 @@ public class HisotryTransactionFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public HisotryTransactionFragment() {
+    public HistoryTransactionFragment() {
         // Required empty public constructor
     }
 
@@ -56,8 +56,8 @@ public class HisotryTransactionFragment extends Fragment {
      * @return A new instance of fragment HisotryTransactionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HisotryTransactionFragment newInstance(String param1, String param2) {
-        HisotryTransactionFragment fragment = new HisotryTransactionFragment();
+    public static HistoryTransactionFragment newInstance(String param1, String param2) {
+        HistoryTransactionFragment fragment = new HistoryTransactionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,7 +78,7 @@ public class HisotryTransactionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_hisotry_transaction, container, false);
+        return inflater.inflate(R.layout.fragment_history_transaction, container, false);
     }
 
     @Override
