@@ -1,4 +1,4 @@
-package com.example.automatictollwalletjava.ui.login;
+package com.example.automatictollwalletjava;
 
 import android.Manifest;
 import android.app.Activity;
@@ -18,10 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -31,9 +29,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.automatictollwalletjava.MapsActivity;
-import com.example.automatictollwalletjava.R;
-import com.example.automatictollwalletjava.HistoryTransactionActivity;
+import com.example.automatictollwalletjava.ui.login.LoggedInUserView;
+import com.example.automatictollwalletjava.ui.login.LoginFormState;
+import com.example.automatictollwalletjava.ui.login.LoginResult;
 import com.example.automatictollwalletjava.ui.login.LoginViewModel;
 import com.example.automatictollwalletjava.ui.login.LoginViewModelFactory;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -154,8 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
-                    HistoryTransactionActivity.MESSAGE_KEY = loginResult.getSuccess().getID();
-                    startActivity(new Intent(LoginActivity.this, HistoryTransactionActivity.class));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
                 setResult(Activity.RESULT_OK);
                 finish();

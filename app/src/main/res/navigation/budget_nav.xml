@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/budget_nav"
+    app:startDestination="@id/addMoneyFragment">
+
+    <fragment
+        android:id="@+id/homeFragement"
+        android:name="com.example.automatictollwalletjava.HomeFragement"
+        android:label="fragment_home_fragement"
+        tools:layout="@layout/fragment_home_fragement" >
+        <action
+            android:id="@+id/action_homeFragement_to_addMoneyFragment"
+            app:destination="@id/addMoneyFragment" />
+        <action
+            android:id="@+id/action_homeFragement_to_retreiveMoneyFragment"
+            app:destination="@id/retreiveMoneyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addMoneyFragment"
+        android:name="com.example.automatictollwalletjava.AddMoneyFragment"
+        android:label="fragment_add_money"
+        tools:layout="@layout/fragment_add_money" />
+    <fragment
+        android:id="@+id/retreiveMoneyFragment"
+        android:name="com.example.automatictollwalletjava.RetreiveMoneyFragment"
+        android:label="fragment_retreive_money"
+        tools:layout="@layout/fragment_retreive_money" />
+</navigation>

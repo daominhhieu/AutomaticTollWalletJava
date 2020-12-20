@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragement">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/retreive_money_btn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:text="RetreiveMoney"
+            app:layout_constraintBottom_toTopOf="@+id/register_vehicle_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/add_money_btn"
+            app:layout_constraintTop_toBottomOf="@+id/user_info_tv" />
+
+        <Button
+            android:id="@+id/add_money_btn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:text="Add Money"
+            app:layout_constraintBottom_toTopOf="@+id/register_btn"
+            app:layout_constraintEnd_toStartOf="@+id/retreive_money_btn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_img" />
+
+        <Button
+            android:id="@+id/register_btn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:text="Register driver"
+            app:layout_constraintBottom_toTopOf="@+id/debug_btn"
+            app:layout_constraintEnd_toStartOf="@+id/register_vehicle_btn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_money_btn" />
+
+        <Button
+            android:id="@+id/debug_btn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:text="Debug"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/log_out_btn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_btn" />
+
+        <Button
+            android:id="@+id/register_vehicle_btn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:text="Register Vehicle"
+            app:layout_constraintBottom_toTopOf="@+id/log_out_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/register_btn"
+            app:layout_constraintTop_toBottomOf="@+id/retreive_money_btn" />
+
+        <Button
+            android:id="@+id/log_out_btn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:text="Log out"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/debug_btn"
+            app:layout_constraintTop_toBottomOf="@+id/register_vehicle_btn" />
+
+        <TextView
+            android:id="@+id/user_info_tv"
+            android:layout_width="225dp"
+            android:layout_height="106dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/retreive_money_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/profile_img"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile_img"
+            android:layout_width="137dp"
+            android:layout_height="108dp"
+            android:contentDescription="user_profile_pic"
+            android:src="@drawable/article"
+            app:layout_constraintBottom_toTopOf="@+id/add_money_btn"
+            app:layout_constraintEnd_toStartOf="@+id/user_info_tv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
