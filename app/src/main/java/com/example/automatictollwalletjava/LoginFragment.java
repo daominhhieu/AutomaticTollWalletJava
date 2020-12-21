@@ -1,8 +1,6 @@
 package com.example.automatictollwalletjava;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -15,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,7 +24,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +38,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,22 +102,23 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ((MainActivity)getActivity()).bottomNavigationView.setVisibility(View.GONE);
+
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
 
 /**This part is for initiate variable linked from layout**/
-        final EditText usernameEditText = getActivity().findViewById(R.id.username);
-        final EditText passwordEditText = getActivity().findViewById(R.id.password);
+        final EditText usernameEditText = getActivity().findViewById(R.id.login_phone_number);
+        final EditText passwordEditText = getActivity().findViewById(R.id.login_password);
         final Button loginButton = getActivity().findViewById(R.id.login);
-        final ProgressBar loadingProgressBar = getActivity().findViewById(R.id.loading);
         LLatitude_tv = getActivity().findViewById(R.id.LLatitude_tv);
 
 
@@ -127,7 +127,7 @@ public class LoginFragment extends Fragment {
         locationRequest.setFastestInterval(1000 * FAST_INTERVAL_LOC_REQ);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         /**This part is to display GPS location**/
-        LLatitude_tv.setText(update_GPS_location());
+        LLatitude_tv.setText("NULL");
 
         /**This object initiated to response to changes in text field of "usernameEditText" and "passwordEditText"**/
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -165,7 +165,6 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
@@ -194,16 +193,16 @@ public class LoginFragment extends Fragment {
                 if (loginResult == null) {
                     return;
                 }
-                loadingProgressBar.setVisibility(View.GONE);
                 if (loginResult.getError() != null) {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
-                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    ((MainActivity)getActivity()).bottomNavigationView.setVisibility(View.VISIBLE);
+                    Navigation.findNavController(view)
+                            .navigate(R.id.action_valid_log_in);
+
                 }
-                getActivity().setResult(Activity.RESULT_OK);
-                getActivity().finish();
 
                 /**Complete and destroy login activity once successful**/
 
@@ -220,6 +219,7 @@ public class LoginFragment extends Fragment {
             }
         };
         setupGPS();
+
     }
     /**This part is for declare private functions in LoginActivity.java**/
 
@@ -233,10 +233,8 @@ public class LoginFragment extends Fragment {
         Toast.makeText(getActivity().getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 
-    private String update_GPS_location()
-    {
-        String loc_str = "HEEY YOOOO1";
-        return loc_str;
+    private void ToastError(String message) {
+        Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void setupGPS()

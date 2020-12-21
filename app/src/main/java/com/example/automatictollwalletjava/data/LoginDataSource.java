@@ -1,7 +1,7 @@
 package com.example.automatictollwalletjava.data;
 
 import com.example.automatictollwalletjava.data.model.LoggedInUser;
-import com.example.automatictollwalletjava.TestStoredFunction;
+import com.example.automatictollwalletjava.ui.login.TestStoredFunction;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.

@@ -1,4 +1,4 @@
-package com.example.automatictollwalletjava;
+package com.example.automatictollwalletjava.ui.login;
 
 import com.example.automatictollwalletjava.data.Result;
 import com.example.automatictollwalletjava.data.model.LoggedInUser;
@@ -27,7 +27,7 @@ public class TestStoredFunction {
 
     private String[][] init_user_information_local_test =
             {{"daominhhieu3@gmail.com", "Hieu2312.","Dao Minh Hieu"},
-            {"toiluonlahieu@gmail.com", "Hieu2312.","not Dao Minh Hieu"}};
+            {"0835771741", "Hieu2312.","not Dao Minh Hieu"}};
     public ArrayList<String[]> user_information_local_test = new ArrayList<String[]>();
 
     private int[] init_budget_local_test ={100000, 200000};

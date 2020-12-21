@@ -62,131 +62,131 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
 /**This part is for declared action when enter LoginActivity.java**/
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
-
-
-/**This part is for initiate variable linked from layout**/
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-        LLatitude_tv = findViewById(R.id.LLatitude_tv);
-
-
-/**This part is for declare actions in LoginActivity.java**/
-        locationRequest.setInterval(1000* DEFAULT_INTERVAL_LOC_REQ);
-        locationRequest.setFastestInterval(1000 * FAST_INTERVAL_LOC_REQ);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        /**This part is to display GPS location**/
-        LLatitude_tv.setText(update_GPS_location());
-
-        /**This object initiated to response to changes in text field of "usernameEditText" and "passwordEditText"**/
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-                return false;
-            }
-        });
-
-        /**This action is to submit input "usernameEditText" and "passwordEditText" to "loginViewModel" handlers via "loginButton"**/
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        });
-
-        /**This part is to get result from "loginViewModel.java" to change to other activity**/
-        loginViewModel.getLoginFormState().observe( this, new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
-            }
-        });
-
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                }
-                setResult(Activity.RESULT_OK);
-                finish();
-
-                /**Complete and destroy login activity once successful**/
-
-            }
-        });
-
-
-
-        locationCallback =  new LocationCallback(){
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                LLatitude_tv.setText(String.valueOf(locationResult.getLastLocation().getLatitude()));
-            }
-        };
-        setupGPS();
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch(requestCode)
-        {
-            case PERMISSION_FINE_LOCATION:
-                if(grantResults[0] == PackageManager.PERMISSION_DENIED)
-                {
-                    finish();
-                }
-        }
+//        setContentView(R.layout.activity_login);
+//        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
+//                .get(LoginViewModel.class);
+//
+//
+///**This part is for initiate variable linked from layout**/
+//        final EditText usernameEditText = findViewById(R.id.username);
+//        final EditText passwordEditText = findViewById(R.id.login_password);
+//        final Button loginButton = findViewById(R.id.login);
+//        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+//        LLatitude_tv = findViewById(R.id.LLatitude_tv);
+//
+//
+///**This part is for declare actions in LoginActivity.java**/
+//        locationRequest.setInterval(1000* DEFAULT_INTERVAL_LOC_REQ);
+//        locationRequest.setFastestInterval(1000 * FAST_INTERVAL_LOC_REQ);
+//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        /**This part is to display GPS location**/
+//        LLatitude_tv.setText(update_GPS_location());
+//
+//        /**This object initiated to response to changes in text field of "usernameEditText" and "passwordEditText"**/
+//        TextWatcher afterTextChangedListener = new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                // ignore
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                // ignore
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
+//                        passwordEditText.getText().toString());
+//            }
+//        };
+//        usernameEditText.addTextChangedListener(afterTextChangedListener);
+//        passwordEditText.addTextChangedListener(afterTextChangedListener);
+//        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                    loginViewModel.login(usernameEditText.getText().toString(),
+//                            passwordEditText.getText().toString());
+//                }
+//                return false;
+//            }
+//        });
+//
+//        /**This action is to submit input "usernameEditText" and "passwordEditText" to "loginViewModel" handlers via "loginButton"**/
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadingProgressBar.setVisibility(View.VISIBLE);
+//                loginViewModel.login(usernameEditText.getText().toString(),
+//                        passwordEditText.getText().toString());
+//            }
+//        });
+//
+//        /**This part is to get result from "loginViewModel.java" to change to other activity**/
+//        loginViewModel.getLoginFormState().observe( this, new Observer<LoginFormState>() {
+//            @Override
+//            public void onChanged(@Nullable LoginFormState loginFormState) {
+//                if (loginFormState == null) {
+//                    return;
+//                }
+//                loginButton.setEnabled(loginFormState.isDataValid());
+//                if (loginFormState.getUsernameError() != null) {
+//                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+//                }
+//                if (loginFormState.getPasswordError() != null) {
+//                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+//                }
+//            }
+//        });
+//
+//        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+//            @Override
+//            public void onChanged(@Nullable LoginResult loginResult) {
+//                if (loginResult == null) {
+//                    return;
+//                }
+//                loadingProgressBar.setVisibility(View.GONE);
+//                if (loginResult.getError() != null) {
+//                    showLoginFailed(loginResult.getError());
+//                }
+//                if (loginResult.getSuccess() != null) {
+//                    updateUiWithUser(loginResult.getSuccess());
+//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                }
+//                setResult(Activity.RESULT_OK);
+//                finish();
+//
+//                /**Complete and destroy login activity once successful**/
+//
+//            }
+//        });
+//
+//
+//
+//        locationCallback =  new LocationCallback(){
+//            @Override
+//            public void onLocationResult(LocationResult locationResult) {
+//                super.onLocationResult(locationResult);
+//                LLatitude_tv.setText(String.valueOf(locationResult.getLastLocation().getLatitude()));
+//            }
+//        };
+//        setupGPS();
+//
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch(requestCode)
+//        {
+//            case PERMISSION_FINE_LOCATION:
+//                if(grantResults[0] == PackageManager.PERMISSION_DENIED)
+//                {
+//                    finish();
+//                }
+//        }
     }
 
     /**This part is for declare private functions in LoginActivity.java**/

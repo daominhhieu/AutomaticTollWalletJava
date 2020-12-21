@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.example.automatictollwalletjava.add_retrive_fragment.*;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,6 +74,8 @@ public class homeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         final Button add_money_btn = (Button) getActivity().findViewById(R.id.add_money_btn);
         Button retreive_money_btn = (Button) getActivity().findViewById(R.id.retreive_money_btn);
