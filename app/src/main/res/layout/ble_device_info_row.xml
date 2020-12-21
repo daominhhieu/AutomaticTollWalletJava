@@ -7,12 +7,6 @@
     android:padding="16dp"
     >
 
-    <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/image"
-        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +21,7 @@
             android:textStyle="bold"
             android:layout_margin="5dp"
             android:textSize="20sp"
-            android:id="@+id/HistoryTitle_tv"
+            android:id="@+id/device_name_tv"
             />
 
         <TextView
@@ -38,7 +32,7 @@
             android:textStyle="bold"
             android:layout_margin="5dp"
             android:textSize="15sp"
-            android:id="@+id/HistoryContent_tv"
+            android:id="@+id/device_MAC_tv"
             />
         <!--so our layout is set-->
 

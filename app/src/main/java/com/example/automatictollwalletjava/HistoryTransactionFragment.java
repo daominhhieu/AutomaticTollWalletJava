@@ -1,6 +1,5 @@
 package com.example.automatictollwalletjava;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,11 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.example.automatictollwalletjava.MyUtilities.MyAdapterHandler;
 import com.example.automatictollwalletjava.ui.login.TestStoredFunction;
 
 import java.util.ArrayList;
@@ -28,10 +25,10 @@ import java.util.ArrayList;
  */
 public class HistoryTransactionFragment extends Fragment {
     public static int MESSAGE_KEY = 0;
-    ListView listView;
+    ListView History_lv;
     String[] mTitle = {"12/7/2020", "14/7/2020", "28/7/2020", "10/8/2020", "12/8/2020"};
     String[] mDescription = {"", "", "", "", ""};
-    int[] images = {R.drawable.road, R.drawable.nap_tien, R.drawable.road ,R.drawable.road,R.drawable.nap_tien};
+    int[] mImages = {R.drawable.road, R.drawable.nap_tien, R.drawable.road ,R.drawable.road,R.drawable.nap_tien};
     String theUser;
     ArrayList<Integer> budget = new TestStoredFunction().budget_local_test;
 
@@ -86,11 +83,15 @@ public class HistoryTransactionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listView = (ListView) getActivity().findViewById(R.id.fragment_listview);
-        MyAdapter myAdapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
+        History_lv = (ListView) getActivity().findViewById(R.id.History_lv);
+        MyAdapterHandler History_lv_adapter = new MyAdapterHandler(
+                getActivity(),
+                String2ArrayList_String(mTitle),
+                String2ArrayList_String(mDescription),
+                Integer2ArrayList_Integer(mImages));
 
 
-        listView.setAdapter(myAdapter);
+        History_lv.setAdapter(History_lv_adapter);
 
         TestStoredFunction.Track_profile track = new TestStoredFunction.Track_profile(true);
 
@@ -113,7 +114,7 @@ public class HistoryTransactionFragment extends Fragment {
 
         mDescription[4] = "Insert "+ new TestStoredFunction.Transaction_Profile(mTitle[4], 10000).transaction_value + " VND";
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        History_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position ==  0) {
@@ -138,37 +139,30 @@ public class HistoryTransactionFragment extends Fragment {
         });
     }
 
-    class MyAdapter extends ArrayAdapter<String> {
-
-        Context context;
-        String rTitle[];
-        String rDescription[];
-        int rImgs[];
-
-        MyAdapter (Context c, String title[], String description[], int imgs[]) {
-            super(c, R.layout.row, R.id.textView1, title);
-            this.context = c;
-            this.rTitle = title;
-            this.rDescription = description;
-            this.rImgs = imgs;
-
+    private ArrayList<String> String2ArrayList_String(String[] strings)
+    {
+        ArrayList<String> tmp_ArrayList = new ArrayList<String>();
+        if(strings.length > 0)
+        {
+            for(String item : strings)
+            {
+                tmp_ArrayList.add(item);
+            }
         }
+        return tmp_ArrayList;
+    }
 
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = layoutInflater.inflate(R.layout.row, parent, false);
-            ImageView images = row.findViewById(R.id.image);
-            TextView myTitle = row.findViewById(R.id.textView1);
-            TextView myDescription = row.findViewById(R.id.textView2);
-
-            // now set our resources on views
-            images.setImageResource(rImgs[position]);
-            myTitle.setText(rTitle[position]);
-            myDescription.setText(rDescription[position]);
-            return row;
+    private ArrayList<Integer> Integer2ArrayList_Integer(int[] integers)
+    {
+        ArrayList<Integer> tmp_ArrayList = new ArrayList<Integer>();
+        if(integers.length > 0)
+        {
+            for(Integer item : integers)
+            {
+                tmp_ArrayList.add(item);
+            }
         }
+        return tmp_ArrayList;
     }
 
 }

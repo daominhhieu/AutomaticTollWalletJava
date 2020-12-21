@@ -18,10 +18,19 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 public class MainActivity extends AppCompatActivity {
 
-    public static final int PERMISSION_FINE_LOCATION = 99;
     public BottomNavigationView bottomNavigationView;
+    public static Thread Thread1 = null;
+
+    public static String SERVER_IP;
+    public static int SERVER_PORT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +45,68 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch(requestCode)
-        {
-            case PERMISSION_FINE_LOCATION:
-                if(grantResults[0] == PackageManager.PERMISSION_DENIED)
-                {
-                    finish();
+    private PrintWriter output;
+    private BufferedReader input;
+    class Thread1 implements Runnable {
+        public void run() {
+            Socket socket;
+            try {
+                socket = new Socket(SERVER_IP, SERVER_PORT);
+                output = new PrintWriter(socket.getOutputStream());
+                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO: add action in thread 1
+                    }
+                });
+                new Thread(new Thread2()).start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class Thread2 implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    final String message = input.readLine();
+                    if (message != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //TODO: add action in thread 2
+                            }
+                        });
+                    } else {
+                        Thread1 = new Thread(new Thread1());
+                        Thread1.start();
+                        return;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    class Thread3 implements Runnable {
+        private String message;
+        Thread3(String message) {
+            this.message = message;
+        }
+        @Override
+        public void run() {
+            output.write(message);
+            output.flush();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //TODO: add action in thread 3
+                }
+            });
         }
     }
 }

@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+import static android.content.ContentValues.TAG;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginFragment#newInstance} factory method to
@@ -47,7 +54,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class LoginFragment extends Fragment {
 
-
+    public static final int PERMISSION_FINE_LOCATION = 2;
     public static final int DEFAULT_INTERVAL_LOC_REQ = 30;
     public static final int FAST_INTERVAL_LOC_REQ = 5;
     private LoginViewModel loginViewModel;
@@ -103,6 +110,16 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_FINE_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                getActivity().finish();
+            }
+        }
     }
 
     @Override
@@ -225,16 +242,11 @@ public class LoginFragment extends Fragment {
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
         Toast.makeText(getActivity().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getActivity().getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-    }
-
-    private void ToastError(String message) {
-        Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void setupGPS()
@@ -244,7 +256,7 @@ public class LoginFragment extends Fragment {
         {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             {
-                requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 99);
+                requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION);
             }
         }
         else
@@ -263,4 +275,7 @@ public class LoginFragment extends Fragment {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
         }
     }
+
+
+
 }
