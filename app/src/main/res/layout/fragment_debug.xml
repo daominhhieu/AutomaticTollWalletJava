@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Debug">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/ConnectTCP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect TCP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ListView
+            android:id="@+id/debug_lv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/ConnectTCP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/SendTCPbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send TCP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/GetPeerDevice"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/GetTCP" />
+
+        <Button
+            android:id="@+id/GetTCP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get TCP"
+            app:layout_constraintBottom_toTopOf="@+id/SendTCPbtn"
+            app:layout_constraintEnd_toStartOf="@+id/SwitchP2P"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ConnectTCP" />
+
+        <Button
+            android:id="@+id/SwitchP2P"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Switch P2P"
+            app:layout_constraintBottom_toTopOf="@+id/GetPeerDevice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/GetTCP"
+            app:layout_constraintTop_toBottomOf="@+id/ConnectTCP" />
+
+        <Button
+            android:id="@+id/GetPeerDevice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Peer Device"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/SendTCPbtn"
+            app:layout_constraintTop_toBottomOf="@+id/SwitchP2P" />
+
+        <TextView
+            android:id="@+id/LLatitude_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GPS"
+            app:layout_constraintBottom_toTopOf="@+id/GetTCP"
+            app:layout_constraintEnd_toEndOf="@+id/ConnectTCP"
+            app:layout_constraintStart_toStartOf="@+id/ConnectTCP"
+            app:layout_constraintTop_toBottomOf="@+id/ConnectTCP" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

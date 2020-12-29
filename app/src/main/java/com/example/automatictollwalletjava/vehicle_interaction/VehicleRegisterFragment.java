@@ -1,11 +1,6 @@
 package com.example.automatictollwalletjava.vehicle_interaction;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -21,10 +16,13 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.automatictollwalletjava.MyUtilities.MyAdapterHandler;
+import com.example.automatictollwalletjava.MyUtilities.MySocketHandler;
 import com.example.automatictollwalletjava.R;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Set;
 
 import static android.content.ContentValues.TAG;
 
@@ -34,11 +32,6 @@ import static android.content.ContentValues.TAG;
  * create an instance of this fragment.
  */
 public class VehicleRegisterFragment extends Fragment {
-
-    private static final int REQUEST_ENABLE_BT = 1;
-    BluetoothAdapter bluetoothAdapter;
-    ListView paired_device_lv;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,143 +79,13 @@ public class VehicleRegisterFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_vehicle_register, container, false);
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch(requestCode)
-        {
-            case REQUEST_ENABLE_BT:
-                if(grantResults[0] == PackageManager.PERMISSION_DENIED)
-                {
-                    LogError("BLE permission denied");
-                }
-        }
-    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        Button enableBLE = getActivity().findViewById(R.id.enableBLE);
-        paired_device_lv = getActivity().findViewById(R.id.paired_vehicle_lv);
-
-
-        enableBLE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SetUpBLE();
-            }
-        });
 
     }
 
-    private void LogError(String string)
-    {
-        Log.d(TAG,this.getClass().getSimpleName() + " : " +  string);
-    }
-
-    private void SetUpBLE()
-    {
-        if(bluetoothAdapter != null) {
-            if (!bluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            }
-            else {
-                bluetoothAdapter.disable();
-            }
-            IntentFilter loc_filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-            getActivity().registerReceiver(receiver_state_changed, loc_filter);
-        }
-        else
-        {
-            LogError("BLE not available");
-        }
-    }
-
-    private void GetPairedBLE()
-    {
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        ArrayList<String> deviceNameList = new ArrayList<String>();
-        ArrayList<String> deviceMACList =new ArrayList<String>();
-        if (pairedDevices.size() > 0) {
-            LogError("number of paired devices: " + String.valueOf(pairedDevices.size()));
-            // There are paired devices. Get the name and address of each paired device.
-            for (BluetoothDevice device : pairedDevices) {
-                String tmp_device_name = device.getName();
-                String tmp_device_MAC = device.getAddress();
-
-                LogError("device name: " + tmp_device_name + "  MAC address: "+ tmp_device_MAC);
-
-                deviceNameList.add(tmp_device_name);
-                deviceMACList.add(tmp_device_MAC);// MAC address
-            }
-            MyAdapterHandler ble_list_adapter = new MyAdapterHandler(getActivity(), deviceNameList, deviceMACList);
-            paired_device_lv.setAdapter(ble_list_adapter);
-
-        }
-    }
-
-    // Create a BroadcastReceiver for ACTION_FOUND.
-    private final BroadcastReceiver receiver_device_found = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Discovery has found a device. Get the BluetoothDevice
-                // object and its info from the Intent.
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-            }
-        }
-    };
-
-    // Create a BroadcastReceiver for ACTION_STATE_CHANGED.
-    private final BroadcastReceiver receiver_state_changed = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, bluetoothAdapter.ERROR);
-                switch (state)
-                {
-                    case BluetoothAdapter.STATE_OFF:
-                        LogError("BLE STATE_OFF");
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_OFF:
-                        LogError("BLE STATE_TURNING_OFF");
-                        break;
-                    case BluetoothAdapter.STATE_ON:
-                        LogError("BLE STATE_ON");
-                        GetPairedBLE();
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_ON:
-                        LogError("BLE STATE_TURNING_ON");
-                        break;
-                    case BluetoothAdapter.STATE_DISCONNECTING:
-                        LogError("BLE STATE_DISCONNECTING");
-                        break;
-                    case BluetoothAdapter.STATE_DISCONNECTED:
-                        LogError("BLE STATE_DISCONNECTED");
-                        break;
-                    case BluetoothAdapter.STATE_CONNECTED:
-                        LogError("BLE STATE_CONNECTED");
-                        break;
-                    case BluetoothAdapter.STATE_CONNECTING:
-                        LogError("BLE STATE_CONNECTING");
-                        break;
-                    default:
-                        LogError("BLE Error or other State");
-                        break;
-                }
-
-            }
-        }
-    };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getActivity().unregisterReceiver(receiver_state_changed);
-    }
 
 }

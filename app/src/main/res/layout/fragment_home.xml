@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/retreive_money_btn"
+            android:id="@+id/retrieve_money_btn"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="140dp"
             android:layout_height="140dp"
@@ -34,7 +34,7 @@
             android:hapticFeedbackEnabled="true"
             android:text="Add Money"
             app:layout_constraintBottom_toTopOf="@+id/register_driver_btn"
-            app:layout_constraintEnd_toStartOf="@+id/retreive_money_btn"
+            app:layout_constraintEnd_toStartOf="@+id/retrieve_money_btn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_img" />
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/register_driver_btn"
-            app:layout_constraintTop_toBottomOf="@+id/retreive_money_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/retrieve_money_btn" />
 
         <Button
             android:id="@+id/log_out_btn"
@@ -100,7 +100,7 @@
             android:layout_width="225dp"
             android:layout_height="106dp"
             android:text="Information"
-            app:layout_constraintBottom_toTopOf="@+id/retreive_money_btn"
+            app:layout_constraintBottom_toTopOf="@+id/retrieve_money_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/profile_img"

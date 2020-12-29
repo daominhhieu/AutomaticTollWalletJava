@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.automatictollwalletjava.MyUtilities.MyAdapterHandler;
-import com.example.automatictollwalletjava.ui.login.TestStoredFunction;
 
 import java.util.ArrayList;
 
@@ -30,7 +29,7 @@ public class HistoryTransactionFragment extends Fragment {
     String[] mDescription = {"", "", "", "", ""};
     int[] mImages = {R.drawable.road, R.drawable.nap_tien, R.drawable.road ,R.drawable.road,R.drawable.nap_tien};
     String theUser;
-    ArrayList<Integer> budget = new TestStoredFunction().budget_local_test;
+//    ArrayList<Integer> budget = new TestStoredFunction().budget_local_test;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -93,26 +92,26 @@ public class HistoryTransactionFragment extends Fragment {
 
         History_lv.setAdapter(History_lv_adapter);
 
-        TestStoredFunction.Track_profile track = new TestStoredFunction.Track_profile(true);
-
-        track.start_coord = TestStoredFunction.coordinates_set.get(0);
-        track.end_coord = TestStoredFunction.coordinates_set.get(1);
-        int fee1 = new TestStoredFunction.Transaction_Profile(mTitle[0], track).transaction_value;
-        mDescription[0] = "Pay Fee "+ fee1 + " VND";
-
-        mDescription[1] = "Insert "+ new TestStoredFunction.Transaction_Profile(mTitle[1], 20000).transaction_value + " VND";
-
-        track.start_coord = TestStoredFunction.coordinates_set.get(2);
-        track.end_coord = TestStoredFunction.coordinates_set.get(3);
-        int fee2 = new TestStoredFunction.Transaction_Profile(mTitle[0], track).transaction_value;
-        mDescription[2] = "Pay Fee "+ fee2 + " VND";
-
-        track.start_coord = TestStoredFunction.coordinates_set.get(3);
-        track.end_coord = TestStoredFunction.coordinates_set.get(4);
-        int fee3 = new TestStoredFunction.Transaction_Profile(mTitle[0], track).transaction_value;
-        mDescription[3] = "Pay Fee "+ fee3 + " VND";
-
-        mDescription[4] = "Insert "+ new TestStoredFunction.Transaction_Profile(mTitle[4], 10000).transaction_value + " VND";
+//        TestStoredFunction.Track_profile track = new TestStoredFunction.Track_profile(true);
+//
+//        track.start_coord = TestStoredFunction.coordinates_set.get(0);
+//        track.end_coord = TestStoredFunction.coordinates_set.get(1);
+//        int fee1 = new TestStoredFunction.Transaction_Profile(mTitle[0], track).transaction_value;
+//        mDescription[0] = "Pay Fee "+ fee1 + " VND";
+//
+//        mDescription[1] = "Insert "+ new TestStoredFunction.Transaction_Profile(mTitle[1], 20000).transaction_value + " VND";
+//
+//        track.start_coord = TestStoredFunction.coordinates_set.get(2);
+//        track.end_coord = TestStoredFunction.coordinates_set.get(3);
+//        int fee2 = new TestStoredFunction.Transaction_Profile(mTitle[0], track).transaction_value;
+//        mDescription[2] = "Pay Fee "+ fee2 + " VND";
+//
+//        track.start_coord = TestStoredFunction.coordinates_set.get(3);
+//        track.end_coord = TestStoredFunction.coordinates_set.get(4);
+//        int fee3 = new TestStoredFunction.Transaction_Profile(mTitle[0], track).transaction_value;
+//        mDescription[3] = "Pay Fee "+ fee3 + " VND";
+//
+//        mDescription[4] = "Insert "+ new TestStoredFunction.Transaction_Profile(mTitle[4], 10000).transaction_value + " VND";
 
         History_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

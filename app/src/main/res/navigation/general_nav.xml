@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/budget_nav"
-    app:startDestination="@id/vehicleRegisterFragment">
+    app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/vehicleFragment"
         android:name="com.example.automatictollwalletjava.VehicleFragment"
@@ -37,6 +37,12 @@
         <action
             android:id="@+id/action_logout"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_debug"
+            app:destination="@id/debug" />
+        <argument
+            android:name="UserInformation"
+            app:argType="string[]" />
     </fragment>
     <fragment
         android:id="@+id/addMoneyFragment"
@@ -69,6 +75,9 @@
         <action
             android:id="@+id/action_sign_up"
             app:destination="@id/signupFragment" />
+        <argument
+            android:name="UserInformation"
+            app:argType="string[]" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
@@ -79,4 +88,9 @@
             android:id="@+id/action_complete_sign_up"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/debug"
+        android:name="com.example.automatictollwalletjava.Debug"
+        android:label="fragment_debug"
+        tools:layout="@layout/fragment_debug" />
 </navigation>
