@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.automatictollwalletjava.MyUtilities.MySocketHandler;
 
@@ -54,6 +55,14 @@ public class homeFragment extends Fragment {
         Button register_vehicle_btn = (Button) getActivity().findViewById(R.id.register_vehicle_btn);
         Button debug_btn = (Button) getActivity().findViewById(R.id.debug_btn);
         Button log_out_btn = (Button) getActivity().findViewById(R.id.log_out_btn);
+        TextView info = getActivity().findViewById(R.id.user_info_tv);
+
+        String info_layout =
+                "Phone Number:  " + getArguments().getString("phone") + "\n"
+               +"Vehicle name:  " + getArguments().getString("vehicle_name") + "\n"
+               +"Budget      :  " + getArguments().getString("budget");
+
+        info.setText(info_layout);
 
         add_money_btn.setOnClickListener(new View.OnClickListener() {
             @Override
