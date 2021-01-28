@@ -16,7 +16,7 @@
             android:layout_height="200dp"
             android:layout_marginTop="100dp"
             android:background="#FFD08A"
-            android:src="@drawable/ic_profile_pic"
+            android:src="@drawable/signup_profile_pic_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.521"
             app:layout_constraintStart_toStartOf="parent"

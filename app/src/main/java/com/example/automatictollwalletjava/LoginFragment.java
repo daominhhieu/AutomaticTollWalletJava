@@ -26,6 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
+import static com.example.automatictollwalletjava.MainActivity.MainActivityBudget;
+import static com.example.automatictollwalletjava.MainActivity.MainActivityPhone;
+import static com.example.automatictollwalletjava.MainActivity.MainSocketHandler;
+import static com.example.automatictollwalletjava.MainActivity.MainActivityVehicle;
 
 public class LoginFragment extends Fragment {
 
@@ -40,8 +44,6 @@ public class LoginFragment extends Fragment {
 //    TimerTask LoginTask;
 //    Timer timer_task;
 
-    MySocketHandler LoginConnection = new MySocketHandler();
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -55,10 +57,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).bottomNavigationView.setVisibility(View.GONE);
-        PhoneEditText = getActivity().findViewById(R.id.login_phone_number);
-        PasswordEditText = getActivity().findViewById(R.id.login_password);
-        final Button loginButton = getActivity().findViewById(R.id.login);
+        ((MainActivity)requireActivity()).bottomNavigationView.setVisibility(View.GONE);
+        PhoneEditText = view.findViewById(R.id.login_phone_number);
+        PasswordEditText = view.findViewById(R.id.login_password);
+        final Button loginButton = view.findViewById(R.id.login);
 //        timer_task = new Timer();
 //        initiateLoginTask();
 
@@ -80,8 +82,8 @@ public class LoginFragment extends Fragment {
                     write_info.put("action", "login");
                     write_info.put("phone", phone);
                     write_info.put("password", password);
-                    LoginConnection.SetLoginOnGoing();
-                    LoginConnection.StartWrite(write_info);
+                    MainSocketHandler.SetLoginOnGoing();
+                    MainSocketHandler.StartWrite(write_info);
                 }catch (Exception e){
                     LogError("Login button error:..."+e.toString());
                 }
@@ -90,7 +92,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        LoginConnection.BodyHashMutate.observe(getActivity(), new Observer<HashMap<String, String>>() {
+        MainSocketHandler.BodyHashMutate.observe(requireActivity(), new Observer<HashMap<String, String>>() {
             @Override
             public void onChanged(HashMap<String, String> stringStringHashMap) {
                 String result = stringStringHashMap.get("result");
@@ -100,32 +102,32 @@ public class LoginFragment extends Fragment {
                 } else if (action.equals("login")) {
                     if(result.equals("good")){
                         ShowToast("Welcome");
-                        ((MainActivity) getActivity()).bottomNavigationView.setVisibility(View.VISIBLE);
+                        ((MainActivity) requireActivity()).bottomNavigationView.setVisibility(View.VISIBLE);
                         Bundle bundle = new Bundle();
                         for (Map.Entry<String, String> entry : stringStringHashMap.entrySet()) {
                             bundle.putString(entry.getKey(), entry.getValue());
                         }
-                        LoginConnection.SetLoginStatusComplete();
-                        Navigation.findNavController(view)
-                                .navigate(R.id.action_valid_log_in, bundle);
+                        try{
+                            MainActivityPhone = stringStringHashMap.get("phone");
+                            MainActivityBudget = stringStringHashMap.get("budget");
+                            MainActivityVehicle = stringStringHashMap.get("vehicle_name");
+                            MainSocketHandler.SetLoginStatusComplete();
+                            Navigation.findNavController(view)
+                                    .navigate(R.id.action_valid_log_in, bundle);
+                        }catch (Exception e){
+                            LogError("Exception:..."+e);
+                        }
                         return;
                     }
                     LogError("bad result");
+                    ShowToast("Login failed");
+                    MainSocketHandler.SetLoginVirgin();
                 }
-                else if(action.equals("virgin")){
-                    return;
-                }
-                else{
-                    LogError("no action defined");
-                }
-                ShowToast("Login failed");
-                LoginConnection.SetLoginVirgin();
-
             }
         });
 
         /**This part is to judge input validity**/
-        input_status.observe( getActivity(), new Observer<String>() {
+        input_status.observe( requireActivity(), new Observer<String>() {
             @Override
             public void onChanged(String input_validation) {
                 if (input_validation == null) {
@@ -196,10 +198,10 @@ public class LoginFragment extends Fragment {
 
     /**This function is show toast**/
     private void ShowToast(String message) {
-        getActivity().runOnUiThread(new Runnable() {
+        requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -243,12 +245,11 @@ public class LoginFragment extends Fragment {
     /*** A placeholder username validation check ***/
     private boolean isUserNameValid(String username) {
         return StringUtils.isNumeric(username)
-                && username.length()>8 && username.length()<11;
+                && username.length()>9 && username.length()<12;
     }
 
     /*** A placeholder password validation check ***/
     private boolean isPasswordValid(String password) {
-        return StringUtils.isAlphanumeric(password)
-                && password.length()>5;
+        return password.length()>5;
     }
 }

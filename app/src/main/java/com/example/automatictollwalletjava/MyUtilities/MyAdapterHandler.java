@@ -37,7 +37,7 @@ public class MyAdapterHandler extends ArrayAdapter<String> {
 
     public MyAdapterHandler(Context context, ArrayList<String> title, ArrayList<String> description)
     {
-        super(context, R.layout.ble_device_info_row, R.id.device_name_tv, title);
+        super(context, R.layout.history_ble_device_info_row, R.id.device_name_tv, title);
         mcontext = context;
         loc_Title = title;
         loc_Description = description;
@@ -62,7 +62,7 @@ public class MyAdapterHandler extends ArrayAdapter<String> {
         }
         else
         {
-            row = layoutInflater.inflate(R.layout.ble_device_info_row, parent, false);
+            row = layoutInflater.inflate(R.layout.history_ble_device_info_row, parent, false);
             TextView myTitle = row.findViewById(R.id.device_name_tv);
             TextView myDescription = row.findViewById(R.id.device_MAC_tv);
 

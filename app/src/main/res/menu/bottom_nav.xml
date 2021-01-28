@@ -3,11 +3,11 @@
 
     <item android:title="home"
           android:id="@id/homeFragment"
-          android:icon="@drawable/ic_home_nav"/>
+          android:icon="@drawable/nav_home"/>
     <item android:title="history"
           android:id="@id/historyTransactionFragment"
-          android:icon="@drawable/ic_history_nav"/>
+          android:icon="@drawable/nav_history"/>
     <item android:title="vehicle"
           android:id="@id/vehicleFragment"
-          android:icon="@drawable/ic_vehicle_nav"/>
+          android:icon="@drawable/nav_vehicle"/>
 </menu>

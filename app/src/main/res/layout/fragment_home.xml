@@ -12,7 +12,7 @@
 
         <Button
             android:id="@+id/retrieve_money_btn"
-            android:foreground="@drawable/retrievemoney"
+            android:foreground="@drawable/home_retrievemoney"
             style="@style/Widget.Button"
             app:layout_constraintBottom_toTopOf="@+id/register_vehicle_btn"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         <Button
             android:id="@+id/add_money_btn"
             style="@style/Widget.Button"
-            android:foreground="@drawable/addmoney"
+            android:foreground="@drawable/home_addmoney"
             app:layout_constraintBottom_toTopOf="@+id/register_driver_btn"
             app:layout_constraintEnd_toStartOf="@+id/retrieve_money_btn"
             app:layout_constraintHorizontal_bias="0.5"
@@ -33,7 +33,7 @@
         <Button
             android:id="@+id/register_driver_btn"
             style="@style/Widget.Button"
-            android:foreground="@drawable/registerdriver"
+            android:foreground="@drawable/home_registerdriver"
             app:layout_constraintBottom_toTopOf="@+id/debug_btn"
             app:layout_constraintEnd_toStartOf="@+id/register_vehicle_btn"
             app:layout_constraintHorizontal_bias="0.5"
@@ -43,7 +43,7 @@
         <Button
             android:id="@+id/debug_btn"
             style="@style/Widget.Button"
-            android:foreground="@drawable/debug"
+            android:foreground="@drawable/home_debug"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/log_out_btn"
             app:layout_constraintHorizontal_bias="0.5"
@@ -53,7 +53,7 @@
         <Button
             android:id="@+id/register_vehicle_btn"
             style="@style/Widget.Button"
-            android:foreground="@drawable/registervehicle"
+            android:foreground="@drawable/home_registervehicle"
             app:layout_constraintBottom_toTopOf="@+id/log_out_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -63,7 +63,7 @@
         <Button
             android:id="@+id/log_out_btn"
             style="@style/Widget.Button"
-            android:foreground="@drawable/logout"
+            android:foreground="@drawable/home_logout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -86,7 +86,7 @@
             android:layout_width="137dp"
             android:layout_height="108dp"
             android:contentDescription="user_profile_pic"
-            android:src="@drawable/article"
+            android:src="@drawable/vgu_logo"
             app:layout_constraintBottom_toTopOf="@+id/add_money_btn"
             app:layout_constraintEnd_toStartOf="@+id/user_info_tv"
             app:layout_constraintHorizontal_bias="0.5"

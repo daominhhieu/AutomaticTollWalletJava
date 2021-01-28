@@ -12,7 +12,7 @@
     eg:style
 
     <style name="Widget.Button" parent="android:Widget">
-        <item name="android:background">@drawable/homebuttonstyle</item>
+        <item name="android:background">@drawable/vgu_theme_button</item>
         <item name="android:foregroundTint">#FFFFFF</item>
         <item name="android:layout_width">140dp</item>
         <item name="android:layout_height">140dp</item>

@@ -1,5 +1,6 @@
 package com.example.automatictollwalletjava;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.location.Address;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Polyline line;
@@ -33,14 +34,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //    ArrayList<double[]> place = new TestStoredFunction().coordinates_set;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void  onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
+//
 //        TestStoredFunction.Track_profile track = new TestStoredFunction.Track_profile(true);
 //        track.start_coord = TestStoredFunction.coordinates_set.get(MESSAGE_KEY);
 //        track.end_coord = TestStoredFunction.coordinates_set.get(MESSAGE_KEY+1);
@@ -65,15 +65,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-
+//        mMap = googleMap;
+//
+//        // Add a marker in Sydney and move the camera
+//
 //        LatLng home1 = new LatLng(place.get(MESSAGE_KEY)[0], place.get(MESSAGE_KEY)[1]);
 //        LatLng home2 = new LatLng(place.get(MESSAGE_KEY+1)[0], place.get(MESSAGE_KEY+1)[1]);
-
-        Geocoder temp_Geocoder = new Geocoder(this, Locale.getDefault());
-
+//
+//        Geocoder temp_Geocoder = new Geocoder(this, Locale.getDefault());
+//
 //        try {
 //            Address home1_address_add = temp_Geocoder.getFromLocation(home1.latitude, home1.longitude, 1).get(0);
 //            int home1_add_max_index_int = home1_address_add.getMaxAddressLineIndex();

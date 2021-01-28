@@ -6,91 +6,168 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.automatictollwalletjava.MyUtilities.MyAdapterHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HistoryTransactionFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import static android.content.ContentValues.TAG;
+import static com.example.automatictollwalletjava.MainActivity.MainActivityPhone;
+import static com.example.automatictollwalletjava.MainActivity.MainSocketHandler;
+
 public class HistoryTransactionFragment extends Fragment {
     public static int MESSAGE_KEY = 0;
     ListView History_lv;
-    String[] mTitle = {"12/7/2020", "14/7/2020", "28/7/2020", "10/8/2020", "12/8/2020"};
-    String[] mDescription = {"", "", "", "", ""};
-    int[] mImages = {R.drawable.road, R.drawable.nap_tien, R.drawable.road ,R.drawable.road,R.drawable.nap_tien};
-    String theUser;
+
+
+    String[] mTitle_dummy = {"12/7/2020", "14/7/2020", "28/7/2020", "10/8/2020", "12/8/2020"};
+    String[] mDescription_dummy = {"", "", "", "", ""};
+    int pay_fee_symbol = R.drawable.history_pay_fee;
+    int money_symbol = R.drawable.history_add_money;
+    int[] mSymbol_dummy = {pay_fee_symbol, money_symbol, pay_fee_symbol,pay_fee_symbol,money_symbol};
+
+    ArrayList<String> mTitle = new ArrayList<String>();
+    ArrayList<String> mDescription = new ArrayList<String>();
+    ArrayList<Integer> mSymbol = new ArrayList<Integer>();
+
+    private HashMap<String, String> message = new HashMap<String, String>();
+    private int record_index=0;
+    private MutableLiveData<Integer> init_record_cnt = new MutableLiveData<Integer>();
+
+
+
+    private final int INIT_RECORD = 8;
 //    ArrayList<Integer> budget = new TestStoredFunction().budget_local_test;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HistoryTransactionFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HisotryTransactionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HistoryTransactionFragment newInstance(String param1, String param2) {
-        HistoryTransactionFragment fragment = new HistoryTransactionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    public HistoryTransactionFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history_transaction, container, false);
+        return inflater.inflate(R.layout.history_transaction_record_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        init_record_cnt.postValue(INIT_RECORD);
+
         History_lv = (ListView) getActivity().findViewById(R.id.History_lv);
-        MyAdapterHandler History_lv_adapter = new MyAdapterHandler(
-                getActivity(),
-                String2ArrayList_String(mTitle),
-                String2ArrayList_String(mDescription),
-                Integer2ArrayList_Integer(mImages));
+        MyAdapterHandler History_lv_adapter_dummy = new MyAdapterHandler(
+                requireActivity(),
+                String2ArrayList_String(mTitle_dummy),
+                String2ArrayList_String(mDescription_dummy),
+                Integer2ArrayList_Integer(mSymbol_dummy));
+
+        History_lv.setAdapter(History_lv_adapter_dummy);
+
+        History_lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                int temp_index = visibleItemCount + firstVisibleItem;
+//                if(temp_index > record_index){
+//                    record_index = temp_index;
+//                    search_history(record_index);
+//                }
+            }
+        });
+
+        init_record_cnt.observe(requireActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                LogError("init_record_cnt:..." + String.valueOf(integer));
+                int temp_index = INIT_RECORD - integer;
+                LogError("INIT_RECORD - integer:..." + String.valueOf(temp_index));
+                if(temp_index < INIT_RECORD){
+                    search_history(temp_index);
+                }
+
+            }
+        });
+
+        MainSocketHandler.BodyHashMutate.observe(requireActivity(), new Observer<HashMap<String, String>>() {
+            @Override
+            public void onChanged(HashMap<String, String> stringStringHashMap) {
+                String result = stringStringHashMap.get("result");
+                String action = stringStringHashMap.get("action");
+                if(action == null || result == null){
+                    LogError("Null result or action");
+                    return;
+                }
+                if (action.equals("gethistory")) {
+                    if (result.equals("good")) {
+                        try{
+                            String tmp_Longitude1 = stringStringHashMap.get("Longitude1");
+                            String tmp_Latitude1 = stringStringHashMap.get("Latitude1");
+                            String tmp_money = stringStringHashMap.get("money");
+                            String tmp_time = stringStringHashMap.get("time");
+                            String tmp_vehicle_name = stringStringHashMap.get("vehicle_name");
+                            String tmp_vehicle_mass = stringStringHashMap.get("vehicle_mass");
+                            String tmp_Longitude2 = stringStringHashMap.get("Longitude2");
+                            String tmp_Latitude2 = stringStringHashMap.get("Latitude2");
+                            String tmp_street = stringStringHashMap.get("street");
+                            
+                            if(tmp_Longitude1.equals("0.0") ||
+                                    tmp_Latitude1.equals("0.0") ||
+                                    tmp_Longitude2.equals("0.0") ||
+                                    tmp_Latitude2.equals("0.0") ||
+                                    tmp_vehicle_name.equals("None") ||
+                                    tmp_vehicle_mass.equals("0") ||
+                                    tmp_street.equals("None")){
+                                if(tmp_money.contains("-")){
+                                    mTitle.add(tmp_time + "   Retrieve");
+                                }else{
+                                    mTitle.add(tmp_time + "   Add");
+                                }
+                                mDescription.add(tmp_money + " VND");
+                                mSymbol.add(money_symbol);
+
+                                MyAdapterHandler History_lv_adapter = new MyAdapterHandler(
+                                        requireActivity(), mTitle, mDescription, mSymbol);
+
+                                History_lv.setAdapter(History_lv_adapter);
+                            }
+                            if(init_record_cnt.getValue() > 0){
+                                Timer search_history_init_timer = new Timer();
+                                search_history_init_timer.schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        init_record_cnt.postValue(init_record_cnt.getValue() - 1);
+                                    }
+                                }, 2000L);
+
+                            }
 
 
-        History_lv.setAdapter(History_lv_adapter);
+                        }catch (Exception e){
+                            LogError("Exception:..."+e);
+                        }
+                        return;
+                    }
+                    LogError("Bad result");
+                    init_record_cnt.setValue(0);
+                }
+            }
+        });
 
 //        TestStoredFunction.Track_profile track = new TestStoredFunction.Track_profile(true);
 //
@@ -117,19 +194,19 @@ public class HistoryTransactionFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position ==  0) {
-                    MapsActivity.MESSAGE_KEY = 0;
-                    startActivity(new Intent(getActivity(), MapsActivity.class));
+                    MapsFragment.MESSAGE_KEY = 0;
+                    startActivity(new Intent(getActivity(), MapsFragment.class));
                 }
                 if (position ==  1) {
 
                 }
                 if (position ==  2) {
-                    MapsActivity.MESSAGE_KEY = 2;
-                    startActivity(new Intent(getActivity(), MapsActivity.class));
+                    MapsFragment.MESSAGE_KEY = 2;
+                    startActivity(new Intent(getActivity(), MapsFragment.class));
                 }
                 if (position ==  3) {
-                    MapsActivity.MESSAGE_KEY = 3;
-                    startActivity(new Intent(getActivity(), MapsActivity.class));
+                    MapsFragment.MESSAGE_KEY = 3;
+                    startActivity(new Intent(getActivity(), MapsFragment.class));
                 }
                 if (position ==  4) {
 
@@ -164,4 +241,25 @@ public class HistoryTransactionFragment extends Fragment {
         return tmp_ArrayList;
     }
 
+    private void search_history(int loc_index){
+        try{
+            LogError("INIT_RECORD - integer search history:..."+String.valueOf(loc_index));
+            message.put("phone", MainActivityPhone);
+            message.put("action", "gethistory");
+            message.put("index", String.valueOf(loc_index));
+            MainSocketHandler.StartWrite(message);
+        }catch (Exception e){
+            LogError("search history error:..." + e);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    private void LogError(String string)
+    {
+        Log.d(TAG,this.getClass().getSimpleName() + " : " +  string);
+    }
 }

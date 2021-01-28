@@ -32,7 +32,7 @@ import static android.content.ContentValues.TAG;
 
 public class MySocketHandler {
 
-    final String SERVER_IP = "192.168.1.17";
+    final String SERVER_IP = "192.168.1.18";
     final int SERVER_PORT = 2312;
     private PrintWriter output = null;
     private BufferedReader input = null;

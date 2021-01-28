@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    tools:context=".VehicleFragment">
+
+    <TableLayout android:stretchColumns="1,3">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/const_general_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="GENERAL INFORMATION"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:stretchColumns="1,3">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/title_company"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Company: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_company"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TOYOTA" />
+
+                <TextView
+                    android:id="@+id/title_chassis_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chassis Number: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_chassis_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KF3-6903764" />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:stretchColumns="1,3">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/title_vehicle_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle type: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_vehicle_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ô tô con" />
+
+                <TextView
+                    android:id="@+id/title_engine_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Engine number: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_engine_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7K-0520337" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </TableLayout>
+
+
+    <TableLayout>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/const_technical_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TECHNICAL INFORMATION"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:stretchColumns="1,3">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/title_total_volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Volume: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_total_volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4520x1720x1850 mm" />
+
+                <TextView
+                    android:id="@+id/title_trunk_volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trunk Volume: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_trunk_volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Blank" />
+            </TableRow>
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:stretchColumns="1,3">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/title_mass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mass: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_mass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1425 kg" />
+
+                <TextView
+                    android:id="@+id/title_max_payload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum payload: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_max_payload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kg" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:stretchColumns="1,3">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/title_seat_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Number of seat: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_seat_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8 người" />
+
+                <TextView
+                    android:id="@+id/title_max_load"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum load: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_max_load"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1945 kg" />
+            </TableRow>
+
+
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:stretchColumns="1,3">
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/title_axis_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Axis number/ Basic length: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_axis_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2/ 2650" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/title_drag_load"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum drag load: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_drag_load"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kg" />
+            </TableRow>
+        </TableLayout>
+    </TableLayout>
+
+    <TableLayout>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/const_check_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CONDITION"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:stretchColumns="1,3">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/title_last_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last check up: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_last_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="09/12/2020" />
+
+                <TextView
+                    android:id="@+id/title_check_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Check up agent: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_check_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5015D" />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:stretchColumns="1,3">
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/title_GCN_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GCN number: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_GCN_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KD-4501096" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/title_GCN_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GCN expiration date: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/input_GCN_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="08/06/2021" />
+            </TableRow>
+
+        </TableLayout>
+
+    </TableLayout>
+
+
+</TableLayout>

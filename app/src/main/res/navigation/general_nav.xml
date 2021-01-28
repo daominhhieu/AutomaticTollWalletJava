@@ -8,29 +8,20 @@
         android:id="@+id/vehicleFragment"
         android:name="com.example.automatictollwalletjava.VehicleFragment"
         android:label="fragment_vehicle"
-        tools:layout="@layout/fragment_vehicle" />
+        tools:layout="@layout/vehicle_fragment" />
     <fragment
         android:id="@+id/historyTransactionFragment"
         android:name="com.example.automatictollwalletjava.HistoryTransactionFragment"
         android:label="fragment_history_transaction"
-        tools:layout="@layout/fragment_history_transaction" />
+        tools:layout="@layout/history_transaction_record_fragment" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.automatictollwalletjava.homeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_add_money"
-            app:destination="@id/addMoneyFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_retreiveMoneyFragment"
-            app:destination="@id/retreiveMoneyFragment" />
-        <action
             android:id="@+id/action_driver_register"
             app:destination="@id/driverRegisterFragment" />
-        <action
-            android:id="@+id/action_retreive_money"
-            app:destination="@id/retreiveMoneyFragment" />
         <action
             android:id="@+id/action_vehicle_register"
             app:destination="@id/vehicleRegisterFragment" />
@@ -45,25 +36,15 @@
             app:argType="string[]" />
     </fragment>
     <fragment
-        android:id="@+id/addMoneyFragment"
-        android:name="com.example.automatictollwalletjava.add_retrive_fragment.AddMoneyFragment"
-        android:label="fragment_add_money"
-        tools:layout="@layout/fragment_add_money" />
-    <fragment
-        android:id="@+id/retreiveMoneyFragment"
-        android:name="com.example.automatictollwalletjava.add_retrive_fragment.RetreiveMoneyFragment"
-        android:label="fragment_retreive_money"
-        tools:layout="@layout/fragment_retreive_money" />
-    <fragment
         android:id="@+id/driverRegisterFragment"
-        android:name="com.example.automatictollwalletjava.vehicle_interaction.DriverRegisterFragment"
+        android:name="com.example.automatictollwalletjava.vehicle_interaction.DriverRegisterDialog"
         android:label="fragment_driver_register"
-        tools:layout="@layout/fragment_driver_register" />
+        tools:layout="@layout/driver_register_dialog" />
     <fragment
         android:id="@+id/vehicleRegisterFragment"
         android:name="com.example.automatictollwalletjava.vehicle_interaction.VehicleRegisterFragment"
         android:label="fragment_vehicle_register"
-        tools:layout="@layout/fragment_vehicle_register" />
+        tools:layout="@layout/vehicle_register_fragment" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.automatictollwalletjava.LoginFragment"
@@ -92,5 +73,5 @@
         android:id="@+id/debug"
         android:name="com.example.automatictollwalletjava.Debug"
         android:label="fragment_debug"
-        tools:layout="@layout/fragment_debug" />
+        tools:layout="@layout/debug" />
 </navigation>

@@ -19,7 +19,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/article" />
+            app:srcCompat="@drawable/vgu_logo" />
 
         <EditText
             android:id="@+id/login_password"
