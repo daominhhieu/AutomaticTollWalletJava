@@ -1,3 +1,4 @@
+
 package com.example.automatictollwalletjava.vehicle_interaction;
 
 import android.app.AlertDialog;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import static android.content.ContentValues.TAG;
 
 public class DriverRegisterDialog extends DialogFragment {
-    public interface DriverRegisterDialog_inf { public void DriverReg(DialogFragment drv_reg);}
+    public interface DriverRegisterDialog_inf { public void DriverReg(int device);}
     DriverRegisterDialog.DriverRegisterDialog_inf listener;
 
     @NonNull
@@ -36,7 +37,7 @@ public class DriverRegisterDialog extends DialogFragment {
         builder.setTitle("Choose a vehicle").setItems(loc_dev_name.toArray(new String[loc_dev_name.size()]), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DriverRegisterDialog.this.getDialog().cancel();
+                listener.DriverReg(which);
             }
         });
 

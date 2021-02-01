@@ -21,22 +21,38 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.automatictollwalletjava.MyUtilities.MySocketHandler;
+import com.example.automatictollwalletjava.MyUtilities.VNCharacterUtils;
 import com.example.automatictollwalletjava.add_retrieve_fragment.AddMoneyDialog;
 import com.example.automatictollwalletjava.add_retrieve_fragment.RetrieveMoneyDialog;
+import com.example.automatictollwalletjava.vehicle_interaction.BluetoothConnectionService;
 import com.example.automatictollwalletjava.vehicle_interaction.DriverRegisterDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
 
@@ -51,6 +67,14 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
     public static String MainActivityBudget = "null";
     public static String MainActivityVehicle = "null";
     public static int MainActivityVehicleMass = 0;
+
+    public static LatLng pos1_Map;
+    public static LatLng pos2_Map;
+    public static String fee_Map;
+    public static String vehicle_Map;
+
+    BluetoothConnectionService mBluetoothConnection;
+
 
     private final int PERMISSION_FINE_LOCATION = 2;
     private final int DEFAULT_INTERVAL_LOC_REQ = 1;
@@ -70,8 +94,9 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
     LocationCallback locationCallback;
     Geocoder loc_Geocoder;
 
+    private static final UUID MY_UUID_INSECURE =
+            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
-    private HashMap<String, String> message = new HashMap<String, String>();
     public static BluetoothAdapter mBluetoothAdapter;
     public static ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
     public static MutableLiveData<ArrayList<BluetoothDevice>> mBTDevices_Mutate = new MutableLiveData<ArrayList<BluetoothDevice>>();
@@ -107,24 +132,25 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
                         if(tmp_idx > -1)
                         {
                             tmp_street = tmp_add.getAddressLine(tmp_idx);
+                            tmp_street = VNCharacterUtils.removeAccent(tmp_street);
+//                            tmp_street = Street_extraction(tmp_street);
+
                             LogError("Street name:..."+tmp_street);
                         }
 
                         if(Pos1st == null)
                         {
                             Pos1st = tmp_loc;
+                            LogError("Street name:..."+tmp_street);
                         }
 
                         if(StreetLast == null)
                         {
-                            StreetLast = tmp_street;
+                            StreetLast = Street_extraction(tmp_street);
                         }
-                        else if(tmp_street != null)
+                        else if(!tmp_street.contains(StreetLast))
                         {
-                            if(!StreetLast.equals(tmp_street))
-                            {
-                                Pos2nd = tmp_loc;
-                            }
+                            Pos2nd = tmp_loc;
                         }
 
                         if((Pos2nd != null) && (Pos1st != null))
@@ -132,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
                             pay_fee(Pos1st, Pos2nd, StreetLast);
                             Pos2nd = null;
                             Pos1st = Pos2nd;
-                            StreetLast = tmp_street;
+                            StreetLast = Street_extraction(tmp_street);
                         }
 
                     } catch (IOException e) {
@@ -157,19 +183,30 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
         StreetLast = null;
     }
 
+    private String Street_extraction(String loc_addr)
+    {
+        loc_addr = loc_addr.substring(loc_addr.indexOf(' ')+1);
+        loc_addr = loc_addr.substring(0,loc_addr.indexOf(','));
+        return loc_addr;
+    }
+
     private void pay_fee(Location pos1, Location pos2, String street)
     {
         if((MainActivityPhone != null))
         {
             try{
+                HashMap<String, String> message = new HashMap<String, String>();
+                LatLng tmp_pos1 = new LatLng(pos1.getLatitude(), pos1.getLongitude());
+                LatLng tmp_pos2 = new LatLng(pos2.getLatitude(), pos2.getLongitude());
+                Double dist = SphericalUtil.computeDistanceBetween(tmp_pos1, tmp_pos2);
                 message.put("phone", MainActivityPhone);
                 message.put("action", "payfee");
                 message.put("Longitude1", String.valueOf(pos1.getLongitude()));
                 message.put("Latitude1", String.valueOf(pos1.getLatitude()));
                 message.put("Longitude2", String.valueOf(pos2.getLongitude()));
                 message.put("Latitude2", String.valueOf(pos2.getLatitude()));
+                message.put("distance", dist.toString());
                 message.put("street", street);
-
                 MainSocketHandler.StartWrite(message);
             }catch (Exception e){
                 LogError("Exception:..."+e);
@@ -184,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
         if((MainActivityPhone != null)&& (money != null))
         {
             try{
+                HashMap<String, String> message = new HashMap<String, String>();
                 message.put("phone", MainActivityPhone);
                 message.put("action", "addmoney");
                 message.put("money", money);
@@ -205,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
             if(Integer.parseInt(money) <= Integer.parseInt(MainActivityBudget))
             {
                 try {
+                    HashMap<String, String> message = new HashMap<String, String>();
                     message.put("phone", MainActivityPhone);
                     message.put("action", "retrievemoney");
                     message.put("money", money);
@@ -227,11 +266,6 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
     private void LogError(String string)
     {
         Log.d(TAG,this.getClass().getSimpleName() + " : " +  string);
-    }
-
-    @Override
-    public void DriverReg(DialogFragment drv_reg) {
-
     }
 
     private void setupGPS()
@@ -269,5 +303,26 @@ public class MainActivity extends AppCompatActivity implements AddMoneyDialog.Ad
         });
     }
 
-
+    @Override
+    public void DriverReg(int device) {
+        mBluetoothConnection = new BluetoothConnectionService(this);
+        mBluetoothConnection.startClient(mBTDevices.get(device), MY_UUID_INSECURE);
+        Timer tmp_timer = new Timer();
+        tmp_timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    HashMap<String, String> message = new HashMap<String, String>();
+                    message.put("phone", MainActivityPhone);
+                    message.put("action", "registerdriver");
+                    message.put("vehicle_name", "Toyota");
+                    message.put("vehicle_mass", "2");
+                    MainSocketHandler.StartWrite(message);
+                }catch (Exception e){
+                    LogError("Exception:..."+e);
+                }
+                return;
+            }
+        }, 5000);
+    }
 }

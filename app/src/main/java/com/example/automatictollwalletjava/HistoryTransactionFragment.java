@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.automatictollwalletjava.MyUtilities.MyAdapterHandler;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +34,12 @@ import java.util.TimerTask;
 import static android.content.ContentValues.TAG;
 import static com.example.automatictollwalletjava.MainActivity.MainActivityPhone;
 import static com.example.automatictollwalletjava.MainActivity.MainSocketHandler;
+import static com.example.automatictollwalletjava.MainActivity.fee_Map;
+import static com.example.automatictollwalletjava.MainActivity.pos1_Map;
+import static com.example.automatictollwalletjava.MainActivity.pos2_Map;
+import static com.example.automatictollwalletjava.MainActivity.vehicle_Map;
 
-public class HistoryTransactionFragment extends Fragment {
+public class HistoryTransactionFragment extends Fragment{
     public static int MESSAGE_KEY = 0;
     ListView History_lv;
 
@@ -43,9 +54,13 @@ public class HistoryTransactionFragment extends Fragment {
     ArrayList<String> mDescription = new ArrayList<String>();
     ArrayList<Integer> mSymbol = new ArrayList<Integer>();
 
-    private HashMap<String, String> message = new HashMap<String, String>();
+    MyAdapterHandler History_lv_adapter;
+    private static boolean History_lv_clicked = false;
+
     private int record_index=0;
     private MutableLiveData<Integer> init_record_cnt = new MutableLiveData<Integer>();
+
+    private Timer search_history_init_timer = new Timer();
 
 
 
@@ -67,13 +82,13 @@ public class HistoryTransactionFragment extends Fragment {
         init_record_cnt.postValue(INIT_RECORD);
 
         History_lv = (ListView) getActivity().findViewById(R.id.History_lv);
-        MyAdapterHandler History_lv_adapter_dummy = new MyAdapterHandler(
+        History_lv_adapter = new MyAdapterHandler(
                 requireActivity(),
-                String2ArrayList_String(mTitle_dummy),
-                String2ArrayList_String(mDescription_dummy),
-                Integer2ArrayList_Integer(mSymbol_dummy));
+                mTitle,
+                mDescription,
+                mSymbol);
 
-        History_lv.setAdapter(History_lv_adapter_dummy);
+        History_lv.setAdapter(History_lv_adapter);
 
         History_lv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -83,11 +98,26 @@ public class HistoryTransactionFragment extends Fragment {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                int temp_index = visibleItemCount + firstVisibleItem;
-//                if(temp_index > record_index){
-//                    record_index = temp_index;
-//                    search_history(record_index);
-//                }
+                try{
+                    if(init_record_cnt.getValue() <= 0){
+                        int temp_index = visibleItemCount + firstVisibleItem;
+                        if(temp_index >= record_index) {
+                            record_index = totalItemCount;
+                            search_history(record_index);
+                            search_history_init_timer.cancel();
+                            search_history_init_timer = new Timer();
+                            search_history_init_timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    search_history(record_index);
+                                }
+                            }, 2000L);
+                        }
+                    }
+                }catch(NullPointerException e)
+                {
+
+                }
             }
         });
 
@@ -95,12 +125,30 @@ public class HistoryTransactionFragment extends Fragment {
             @Override
             public void onChanged(Integer integer) {
                 LogError("init_record_cnt:..." + String.valueOf(integer));
-                int temp_index = INIT_RECORD - integer;
-                LogError("INIT_RECORD - integer:..." + String.valueOf(temp_index));
-                if(temp_index < INIT_RECORD){
-                    search_history(temp_index);
-                }
+                int record_index_cur = INIT_RECORD - integer;
+                if((record_index_cur == record_index + 1) || (0 == record_index_cur))
+                {
 
+                    if(record_index_cur < INIT_RECORD){
+                        search_history(record_index_cur);
+                    }
+                    record_index = record_index_cur;
+                    LogError("record_index:..." + String.valueOf(record_index));
+                }
+                else
+                {
+                    search_history(record_index);
+                    LogError("record_index retry:..." + String.valueOf(record_index));
+                }
+                search_history_init_timer.cancel();
+                search_history_init_timer = new Timer();
+                search_history_init_timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        init_record_cnt.postValue(INIT_RECORD - record_index);
+                    }
+                }, 2000L);
+                LogError("record_index_cur:..." + String.valueOf(record_index_cur));
             }
         });
 
@@ -114,6 +162,8 @@ public class HistoryTransactionFragment extends Fragment {
                     return;
                 }
                 if (action.equals("gethistory")) {
+                    search_history_init_timer.cancel();
+                    LogError("record_index gethistory:..."+record_index);
                     if (result.equals("good")) {
                         try{
                             String tmp_Longitude1 = stringStringHashMap.get("Longitude1");
@@ -141,19 +191,35 @@ public class HistoryTransactionFragment extends Fragment {
                                 mDescription.add(tmp_money + " VND");
                                 mSymbol.add(money_symbol);
 
-                                MyAdapterHandler History_lv_adapter = new MyAdapterHandler(
-                                        requireActivity(), mTitle, mDescription, mSymbol);
-
-                                History_lv.setAdapter(History_lv_adapter);
+                                History_lv_adapter.notifyDataSetChanged();
+                            }
+                            else
+                            {
+                                if(History_lv_clicked){
+                                    History_lv_clicked = false;
+                                    pos1_Map = new LatLng(Double.parseDouble(tmp_Latitude1), Double.parseDouble(tmp_Longitude1));
+                                    pos2_Map = new LatLng(Double.parseDouble(tmp_Latitude2), Double.parseDouble(tmp_Longitude2));
+                                    vehicle_Map = tmp_vehicle_name;
+                                    fee_Map = tmp_money;
+                                    Navigation.findNavController(view)
+                                            .navigate(R.id.action_show_maps);
+                                }
+                                else
+                                {
+                                    mTitle.add(tmp_time + "   Travel");
+                                    mDescription.add(tmp_money + " VND\n" + tmp_street);
+                                    mSymbol.add(pay_fee_symbol);
+                                    History_lv_adapter.notifyDataSetChanged();
+                                }
                             }
                             if(init_record_cnt.getValue() > 0){
-                                Timer search_history_init_timer = new Timer();
+                                search_history_init_timer = new Timer();
                                 search_history_init_timer.schedule(new TimerTask() {
                                     @Override
                                     public void run() {
                                         init_record_cnt.postValue(init_record_cnt.getValue() - 1);
                                     }
-                                }, 2000L);
+                                }, 500L);
 
                             }
 
@@ -193,23 +259,22 @@ public class HistoryTransactionFragment extends Fragment {
         History_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position ==  0) {
-                    MapsFragment.MESSAGE_KEY = 0;
-                    startActivity(new Intent(getActivity(), MapsFragment.class));
-                }
-                if (position ==  1) {
 
-                }
-                if (position ==  2) {
-                    MapsFragment.MESSAGE_KEY = 2;
-                    startActivity(new Intent(getActivity(), MapsFragment.class));
-                }
-                if (position ==  3) {
-                    MapsFragment.MESSAGE_KEY = 3;
-                    startActivity(new Intent(getActivity(), MapsFragment.class));
-                }
-                if (position ==  4) {
-
+                TextView tmp_item= (TextView)view.findViewById(R.id.HistoryTitle_tv);
+                String tmp_item_name = tmp_item.getText().toString();
+                if(tmp_item_name.contains("Travel"))
+                {
+                    search_history(position);
+                    int tmp_pos = position;
+                    search_history_init_timer.cancel();
+                    search_history_init_timer = new Timer();
+                    search_history_init_timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            search_history(tmp_pos);
+                        }
+                    }, 2000L);
+                    History_lv_clicked = true;
                 }
             }
         });
@@ -243,6 +308,7 @@ public class HistoryTransactionFragment extends Fragment {
 
     private void search_history(int loc_index){
         try{
+            HashMap<String, String> message = new HashMap<String, String>();
             LogError("INIT_RECORD - integer search history:..."+String.valueOf(loc_index));
             message.put("phone", MainActivityPhone);
             message.put("action", "gethistory");

@@ -34,19 +34,14 @@ import static com.example.automatictollwalletjava.MainActivity.MainActivityVehic
 public class LoginFragment extends Fragment {
 
     public final long LOGIN_TIMEOUT = 10000L;
+    //TODO: add login timeout timer
 
-//    MutableLiveData<String> login_status = new MutableLiveData<String>();
     MutableLiveData<String> input_status = new MutableLiveData<String>();
 
     EditText PhoneEditText;
     EditText PasswordEditText;
 
-//    TimerTask LoginTask;
-//    Timer timer_task;
-
-    public LoginFragment() {
-        // Required empty public constructor
-    }
+    public LoginFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,20 +56,11 @@ public class LoginFragment extends Fragment {
         PhoneEditText = view.findViewById(R.id.login_phone_number);
         PasswordEditText = view.findViewById(R.id.login_password);
         final Button loginButton = view.findViewById(R.id.login);
-//        timer_task = new Timer();
-//        initiateLoginTask();
 
         /**The login button**/
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(System.currentTimeMillis() - LoginTask.scheduledExecutionTime() >= LOGIN_TIMEOUT){
-//                    LoginTask.cancel();
-//                    initiateLoginTask();
-//                    timer_task.cancel();
-//                    timer_task = new Timer();
-//                    timer_task.schedule(LoginTask, 0);
-//                }
                 try{
                     String phone = PhoneEditText.getText().toString();
                     String password = PasswordEditText.getText().toString();
@@ -147,27 +133,6 @@ public class LoginFragment extends Fragment {
             }
         });
 
-//        /**This part is to judge login validity**/
-//        login_status.observe(getActivity(), new Observer<String>() {
-//            @Override
-//            public void onChanged(String result) {
-//                LogError("get login result:..."+ result);
-//                if((result.equals("bad"))|| result.isEmpty()){
-//                    ShowToast("Login failed");
-//                }
-//                else{
-//                    ShowToast("Welcome");
-//                    ((MainActivity) requireActivity()).bottomNavigationView.setVisibility(View.VISIBLE);
-//                    Bundle bundle = new Bundle();
-//                    for (Map.Entry<String, String> entry : LoginConnection.getBodyHash().entrySet()) {
-//                        bundle.putString(entry.getKey(), entry.getValue());
-//                    }
-//                    Navigation.findNavController(view)
-//                            .navigate(R.id.action_valid_log_in, bundle);
-//                }
-//            }
-//        });
-
         /**This part is to check live input format validity**/
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
@@ -205,31 +170,6 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-
-//    /**This function run TCP server login conversation**/
-//    private void initiateLoginTask(){
-//        LoginTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                while(System.currentTimeMillis() - LoginTask.scheduledExecutionTime() <= LOGIN_TIMEOUT){
-//                    LoginConnection = new MySocketHandler(HOST,PORT);
-//                    String phone = PhoneEditText.getText().toString();
-//                    String password = PasswordEditText.getText().toString();
-//                    while(!LoginConnection.GetListeningStatus() || !LoginConnection.GetConnectionStatus());
-//                    HashMap<String,String> login_info = new HashMap<String,String>();
-//                    login_info.put("action", "login");
-//                    login_info.put("phone", phone);
-//                    login_info.put("password", password);
-//                    LoginConnection.StartWrite(login_info);
-//                    while(LoginConnection.getBodyHash().size()==0);
-//                    String result = LoginConnection.getBodyHash().get("result");
-//                    login_status.postValue(result);
-//                    return;
-//                }
-//                login_status.postValue("login timeout");
-//            }
-//        };
-//    }
 
     /**This function run TCP server login conversation**/
     private void loginDataChanged(String username, String password) {

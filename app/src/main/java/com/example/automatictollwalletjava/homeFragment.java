@@ -49,8 +49,6 @@ public class homeFragment extends Fragment {
     String action_home = "";
     Timer FetchBudgetTimer;
 
-    private HashMap<String, String> message = new HashMap<String, String>();
-
     private Thread BudgetUpdaterThread;
 
     public homeFragment() {
@@ -139,6 +137,7 @@ public class homeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try{
+                    HashMap<String, String> message = new HashMap<String, String>();
                     action_home ="log_out_btn";
                     message.put("phone", MainActivityPhone);
                     message.put("action", "logout");
@@ -163,6 +162,7 @@ public class homeFragment extends Fragment {
                     if (result.equals("good")) {
                         try{
                             MainSocketHandler.SetLoginVirgin();
+                            MainActivityVehicleMass = 0;
                             Navigation.findNavController(view)
                                     .navigate(R.id.action_logout);
                         }catch (Exception e){
@@ -208,6 +208,7 @@ public class homeFragment extends Fragment {
         public void run(){
             FetchBudgetTimer = new Timer();
             try {
+                HashMap<String, String> message = new HashMap<String, String>();
                 message.put("phone", MainActivityPhone);
                 message.put("action", "getuserinfo");
                 MainSocketHandler.StartWrite(message);
